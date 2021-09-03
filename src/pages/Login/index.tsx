@@ -4,13 +4,13 @@ import { NativeStackNavigatorProps } from "@react-navigation/native-stack/lib/ty
 import React, { useState } from "react"
 import { Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { useAuth } from "../../contexts/AuthContext"
-import { RootStackParamList } from "../../navigation"
+import { ExternalRootStackParamList } from "../../navigation"
 
 function Login() {
 
     // Hooks
     const { colors } = useTheme()
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'SignUp'>>()
+    const navigation = useNavigation<NativeStackNavigationProp<ExternalRootStackParamList, 'SignUp'>>()
     const { login } = useAuth()
 
     // State

@@ -1,23 +1,37 @@
 import { useTheme } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { AppState, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Launch } from '../services/spacex'
 import DateUtils from '../utils/DateUtils'
 
 interface NextLaunchCardProps {
     nextLaunch: Launch
+    onPress?(launch: Launch): void
 }
 
-function NextLaunchCard({ nextLaunch }: NextLaunchCardProps) {
+function NextLaunchCard({ nextLaunch, ...props }: NextLaunchCardProps) {
 
     const { colors } = useTheme()
 
     const [countdown, setCoundown] = useState(Math.floor((new Date(nextLaunch.date_utc).getTime() - new Date().getTime()) / 1000))
 
     useEffect(() => {
-        setTimeout(() => {
+
+        function resetCountdown() {
+            setCoundown(Math.floor((new Date(nextLaunch.date_utc).getTime() - new Date().getTime()) / 1000))
+        }
+
+        AppState.addEventListener('focus', resetCountdown)
+
+        return () => AppState.removeEventListener('focus', resetCountdown)
+    }, [nextLaunch])
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
             setCoundown(countdown - 1)
         }, 1000)
+
+        return () => clearTimeout(timeout)
     }, [countdown])
 
     const days = Math.floor(countdown / (24 * 60 * 60))
@@ -26,16 +40,19 @@ function NextLaunchCard({ nextLaunch }: NextLaunchCardProps) {
     const seconds = countdown % 60
 
     return (
-        <View style={{ padding: 20 }}>
-            <View style={[style.nextLaunchCard, { backgroundColor: colors.card }]}>
-                <View style={{ flexDirection: 'row' }}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={[{ color: colors.text }]}>Next launch</Text>
-                        <Text style={[style.nextLaunchTitle, { color: colors.text }]}>{nextLaunch.name}</Text>
-                        <Text style={[{ color: colors.text }]}>{nextLaunch.tdb ? 'Date yet to be defined' : DateUtils.format(new Date(nextLaunch.date_utc), 'dd/MM/yyyy')}</Text>
-                    </View>
-                    <Image width={100} height={100} source={{ uri: nextLaunch.links.patch.small }} style={{ width: 100, height: 100 }} />
+        <TouchableOpacity
+            onPress={() => props.onPress?.(nextLaunch)}
+            style={[style.nextLaunchCard, { backgroundColor: colors.card }]}
+        >
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1 }}>
+                    <Text style={[{ color: colors.text }]}>Next launch</Text>
+                    <Text style={[style.nextLaunchTitle, { color: colors.text }]}>{nextLaunch.name}</Text>
+                    <Text style={[{ color: colors.text }]}>{nextLaunch.tdb ? 'Date yet to be defined' : DateUtils.format(new Date(nextLaunch.date_utc), 'dd/MM/yyyy')}</Text>
                 </View>
+                <Image width={100} height={100} source={{ uri: nextLaunch.links.patch.small }} style={{ width: 100, height: 100 }} />
+            </View>
+            {!nextLaunch.tdb &&
                 <View style={{ alignSelf: 'stretch', flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10 }}>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={[style.countdownText, { color: colors.text }]}>{days.toString().padStart(2, '0')}</Text>
@@ -57,8 +74,8 @@ function NextLaunchCard({ nextLaunch }: NextLaunchCardProps) {
                         <Text style={[style.countdownTextSmall, { color: colors.text }]}>s</Text>
                     </View>
                 </View>
-            </View>
-        </View>
+            }
+        </TouchableOpacity>
     )
 }
 

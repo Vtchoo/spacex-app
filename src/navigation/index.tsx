@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavigationContainer, DarkTheme, useNavigation, ThemeProvider } from "@react-navigation/native"
+import { CompositeNavigationProp } from '@react-navigation/core'
 import { useAuth } from "../contexts/AuthContext"
 import { Login } from "../pages/Login"
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -11,6 +12,8 @@ import { StatusBar, ToolbarAndroidComponent, View } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { MainScreen } from '../pages/MainScreen'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { LaunchPage } from '../pages/Launch'
+
 
 const Stack = createNativeStackNavigator()
 
@@ -26,6 +29,7 @@ function Navigation() {
             <Stack.Navigator
                 screenOptions={{
                     headerShown: false,
+                    animation: 'fade_from_bottom'
                 }}
             >
                 {!loggedIn ?
@@ -35,7 +39,8 @@ function Navigation() {
                     </> :
                     <>
                         <Stack.Screen name='Main' component={MainScreen} />
-                        <Stack.Screen name='Settings' component={Settings}/>
+                        <Stack.Screen name='Settings' component={Settings} />
+                        <Stack.Screen name='Launch' component={LaunchPage} />
                     </>
                 }
             </Stack.Navigator>
@@ -44,10 +49,16 @@ function Navigation() {
 }
 
 
-type RootStackParamList = {
+type ExternalRootStackParamList = {
     'SignUp': undefined
     'Login': undefined
 }
 
-export type { RootStackParamList }
+type InternalStackParamList = {
+    Main: undefined
+    Settings: undefined
+    Launch: { launchId: string }
+}
+
+export type { ExternalRootStackParamList, InternalStackParamList }
 export default Navigation

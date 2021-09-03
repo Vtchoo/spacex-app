@@ -7,12 +7,17 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useSpaceX } from '../../contexts/SpaceX'
 import SpaceX, { Launch } from '../../services/spacex'
 import DateUtils from '../../utils/DateUtils'
+import { useNavigation } from '@react-navigation/core'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { InternalStackParamList } from '../../navigation'
+import { LaunchCardSmall } from '../../components/LaunchCardSmall'
 
 function Home() {
 
     // Hooks
     const { colors } = useTheme()
     const { user } = useAuth()
+    const navigation = useNavigation<NativeStackNavigationProp<InternalStackParamList>>()
     const { bookmarkedLaunches, bookmarkLaunch, removeLaunchBookmark } = useSpaceX()
 
     // Next launch
@@ -54,28 +59,25 @@ function Home() {
 
     return (
         <ScrollView style={[style.container]}>
-            {nextLaunch && <NextLaunchCard nextLaunch={nextLaunch}/>}
+            {nextLaunch &&
+                <View style={{ padding: 20 }}>
+                    <NextLaunchCard
+                        nextLaunch={nextLaunch}
+                        onPress={launch => navigation.navigate('Launch', { launchId: launch.id })}
+                    />
+                </View>
+            }
             
             <Text style={[style.title, { color: colors.text }]}>Previous launches</Text>
             <FlatList
                 data={pastLaunches}
                 keyExtractor={launch => launch.id}
                 renderItem={({ item, index }) =>
-                    <View
-                        style={[style.launchMiniCard, { backgroundColor: colors.card, marginLeft: index ? 10 : 0 }]}
-                    >
-                        <Image width={75} height={75} source={{ uri: item.links.patch.small }} resizeMode='contain' style={[style.launchMiniCardBadge]} />
-                        <Text style={[style.launchMiniCardTitle, { color: colors.text }]} numberOfLines={1}>{item.name}</Text>
-                        <Text style={[style.launchMiniCardDate, { color: colors.text }]}>{DateUtils.format(new Date(item.date_utc), 'dd/MM/yyyy hh:mm')}</Text>
-                        <View style={{ marginTop: 5, flexDirection: 'row', justifyContent: 'space-evenly', alignSelf: 'stretch' }}>
-                            <Icon
-                                name={bookmarkedLaunches.includes(item.id) ? 'heart' : 'heart-outline'}
-                                size={25}
-                                color={colors.primary}
-                                onPress={bookmarkedLaunches.includes(item.id) ? () => removeLaunchBookmark(item.id): () => bookmarkLaunch(item.id)}
-                            />
-                        </View>
-                    </View>
+                    <LaunchCardSmall
+                        launch={item}
+                        onPress={launch => navigation.navigate('Launch', { launchId: launch.id })}
+                        style={{ marginLeft: index ? 20 : 0 }}
+                    />
                 }
                 horizontal
                 contentContainerStyle={{ padding: 20 }}
@@ -110,29 +112,29 @@ const style = StyleSheet.create({
         fontWeight: 'bold'
     },
 
-    launchMiniCard: {
-        alignItems: 'center',
-        width: 120,
-        padding: 20,
-        borderRadius: 10,
-        elevation: 10,
-        shadowColor: 'white'
-    },
-    launchMiniCardBadge: {
-        width: '100%',
-        aspectRatio: 1
-    },
-    launchMiniCardTitle: {
-        marginTop: 5,
-        // textAlign: 'center',
-        // alignSelf: 'stretch',
-        fontSize: 12,
-        fontWeight: 'bold',
-    },
-    launchMiniCardDate: {
-        textAlign: 'center',
-        fontSize: 8
-    }
+    // launchMiniCard: {
+    //     alignItems: 'center',
+    //     width: 120,
+    //     padding: 20,
+    //     borderRadius: 10,
+    //     elevation: 10,
+    //     shadowColor: 'white'
+    // },
+    // launchMiniCardBadge: {
+    //     width: '100%',
+    //     aspectRatio: 1
+    // },
+    // launchMiniCardTitle: {
+    //     marginTop: 5,
+    //     // textAlign: 'center',
+    //     // alignSelf: 'stretch',
+    //     fontSize: 12,
+    //     fontWeight: 'bold',
+    // },
+    // launchMiniCardDate: {
+    //     textAlign: 'center',
+    //     fontSize: 8
+    // }
 })
 
 export { Home }

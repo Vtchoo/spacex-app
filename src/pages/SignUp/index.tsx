@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../navigation'
+import { ExternalRootStackParamList } from '../../navigation'
 import { useAuth } from '../../contexts/AuthContext'
 
 function SignUp() {
 
     // Hooks
     const { colors } = useTheme()
-    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'Login'>>()
+    const navigation = useNavigation<NativeStackNavigationProp<ExternalRootStackParamList, 'Login'>>()
     const { signup } = useAuth()
 
     // State
