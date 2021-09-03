@@ -82,6 +82,11 @@ class SpaceX {
         return data
     }
 
+    static async getLaunchById(id: string) {
+        const { data } = await axios.get<Launch>(`${this.baseUrl}/${this.version}/launches/${id}`)
+        return data
+    }
+
 }
 
 export type { Launch }

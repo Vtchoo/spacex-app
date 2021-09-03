@@ -7,9 +7,16 @@
  */
 
 import React from 'react';
+import { LayoutAnimation, Platform, UIManager } from 'react-native';
 import { AuthProvider } from './src/contexts/AuthContext';
 import { SpaceXProvider } from './src/contexts/SpaceX';
 import Navigation from './src/navigation';
+
+if (Platform.OS === 'android') {
+	if (UIManager.setLayoutAnimationEnabledExperimental) {
+		UIManager.setLayoutAnimationEnabledExperimental(true);
+	}
+}
 
 function App() {
 
