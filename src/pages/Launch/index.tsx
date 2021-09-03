@@ -68,11 +68,12 @@ function LaunchPage() {
         ref.limitToFirst(cursor ? commentsPerPage + 1 : commentsPerPage)
             .once('value', snapshot => {
                 
+                setLoadingComments(false)
+                
                 if (!snapshot || !snapshot.val()) return
                 
                 setCursor(Object.keys(snapshot.val()).pop() as string)
                 setComments(comments => ({ ...comments, ...snapshot.val() }))
-                setLoadingComments(false)
             })
     }
 
@@ -179,8 +180,9 @@ function LaunchPage() {
             <TouchableOpacity
                 style={[style.loadCommentsButton, { backgroundColor: colors.card, borderColor: colors.border }]}
                 onPress={fetchComments}
+                disabled={loadingComments}
             >
-                <Text style={{ color: colors.text }} >Load more comments...</Text>
+                <Text style={{ color: colors.text }}>{loadingComments ? 'Loading...' : 'Load more comments...'}</Text>
             </TouchableOpacity>
 
             {/* <Text style={{ color: colors.text }}>{JSON.stringify(comments)}</Text>
