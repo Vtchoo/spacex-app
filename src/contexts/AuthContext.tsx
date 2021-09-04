@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 
 interface AuthContextData {
     login(email: string, password: string): Promise<FirebaseAuthTypes.UserCredential>
@@ -22,7 +23,18 @@ function AuthProvider({ children }: AuthProviderProps) {
     useEffect(() => {
         const unsubscribe = auth().onAuthStateChanged(user => {
             setUser(user)
+
+            if (!user) return
+            console.log(user)
+            firestore()
+                .collection('users')
+                .doc(user.uid)
+                .set({
+                    photoURL: user.photoURL,
+                    displayName: user.displayName
+                })
         })
+
 
         return () => unsubscribe()
     }, [])

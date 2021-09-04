@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useTheme } from '@react-navigation/native'
 import { useAuth } from '../../contexts/AuthContext'
 import database from '@react-native-firebase/database'
+import auth from '@react-native-firebase/auth'
 
 function LaunchPage() {
 
@@ -161,7 +162,11 @@ function LaunchPage() {
                     >
                         <View style={{ width: 40, aspectRatio: 1 }}>
                             {user?.photoURL ?
-                                <Image width={40} height={40} source={{ uri: user.photoURL }} style={{ width: '100%', aspectRatio: 1 }} /> :
+                                <Image
+                                    width={40} height={40}
+                                    source={{ uri: user.photoURL }}
+                                    style={{ width: '100%', aspectRatio: 1 }}
+                                /> :
                                 <Icon name='account-circle-outline' size={40} color='grey' />
                             }
                         </View>
