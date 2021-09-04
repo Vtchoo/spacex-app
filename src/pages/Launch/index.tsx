@@ -9,6 +9,7 @@ import { useTheme } from '@react-navigation/native'
 import { useAuth } from '../../contexts/AuthContext'
 import database from '@react-native-firebase/database'
 import auth from '@react-native-firebase/auth'
+import { Comment } from '../../components/Comment'
 
 function LaunchPage() {
 
@@ -156,30 +157,12 @@ function LaunchPage() {
 
             <View style={[style.comments]}>
                 {Object.keys(comments).map((key, i) => 
-                    <View
-                        key={key}
-                        style={[style.comment, { marginTop: i ? 10 : 0 }]}
-                    >
-                        <View style={{ width: 40, aspectRatio: 1 }}>
-                            {user?.photoURL ?
-                                <Image
-                                    width={40} height={40}
-                                    source={{ uri: user.photoURL }}
-                                    style={{ width: '100%', aspectRatio: 1 }}
-                                /> :
-                                <Icon name='account-circle-outline' size={40} color='grey' />
-                            }
-                        </View>
-                        <View style={{ flex: 1, marginLeft: 10 }}>
-                            <Text style={{ color: colors.text, fontWeight: 'bold' }}>
-                                {comments[key].user.slice(0, 7)}
-                            </Text>
-                            <Text style={{ color: colors.text }}>
-                                {comments[key].comment}
-                            </Text>
-
-                        </View>
-                    </View>
+                    <Comment
+                        userId={comments[key].user}
+                        comment={comments[key].comment}
+                        key={i}
+                        style={{ marginTop: i ? 10 : 0 }}
+                    />
                 )}
             </View>
             <TouchableOpacity
@@ -239,9 +222,6 @@ const style = StyleSheet.create({
     comments: {
         margin: 20,
         marginTop: 0
-    },
-    comment: {
-        flexDirection: 'row'
     },
     loadCommentsButton: {
         alignItems: 'center',

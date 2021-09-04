@@ -25,7 +25,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             setUser(user)
 
             if (!user) return
-            console.log(user)
+            
             firestore()
                 .collection('users')
                 .doc(user.uid)
