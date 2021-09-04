@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { MainScreen } from '../pages/MainScreen'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { LaunchPage } from '../pages/Launch'
+import { Profile } from '../pages/Profile'
 
 
 const Stack = createNativeStackNavigator()
@@ -41,6 +42,7 @@ function Navigation() {
                         <Stack.Screen name='Main' component={MainScreen} />
                         <Stack.Screen name='Settings' component={Settings} />
                         <Stack.Screen name='Launch' component={LaunchPage} />
+                        <Stack.Screen name='Profile' component={Profile} />
                     </>
                 }
             </Stack.Navigator>
@@ -58,6 +60,7 @@ type InternalStackParamList = {
     Main: undefined
     Settings: undefined
     Launch: { launchId: string }
+    Profile: { userId?: string }
 }
 
 export type { ExternalRootStackParamList, InternalStackParamList }
