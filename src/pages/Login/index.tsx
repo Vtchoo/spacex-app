@@ -34,12 +34,12 @@ function Login() {
             <TextInput
                 value={email}
                 onChangeText={setEmail}
-                style={[style.gap, style.input, { backgroundColor: colors.card, borderColor: colors.border }]}
+                style={[style.gap, style.input, { backgroundColor: colors.card, borderColor: colors.border, color: colors.text }]}
             />
             <TextInput
                 value={password}
                 onChangeText={setPassword}
-                style={[style.gap, style.input, { backgroundColor: colors.card, borderColor: colors.border }]}
+                style={[style.gap, style.input, { backgroundColor: colors.card, borderColor: colors.border, color: colors.text }]}
             />
             <TouchableOpacity
                 onPress={handleLogin}
@@ -65,7 +65,8 @@ const style = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderRadius: 5
+        borderRadius: 5,
+        padding: 10
     },
     button: {
         padding: 10,
