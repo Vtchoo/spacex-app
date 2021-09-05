@@ -102,6 +102,7 @@ function Profile() {
                 try {
                     const photoURL = await storage().ref(snapshot.metadata.fullPath).getDownloadURL()
                     auth().currentUser?.updateProfile({ photoURL })
+                    firestore().collection('users').doc(user.uid).set({ photoURL }, { merge: true })
                     setNewProfilePic(undefined)
                 } catch (error) {
                     console.log(error)
