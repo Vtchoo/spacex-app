@@ -25,7 +25,10 @@ function LaunchCardSmall({ launch, style = {}, ...props }: LaunchCardSmallProps)
                 onPress={() => props.onPress?.(launch)}
                 style={{ alignItems: 'center' }}
             >
-                <Image width={75} height={75} source={{ uri: launch.links.patch.small }} resizeMode='contain' style={[styles.launchMiniCardBadge]} />
+                {launch.links.patch.small ?
+                    <Image width={75} height={75} source={{ uri: launch.links.patch.small }} resizeMode='contain' style={[styles.launchMiniCardBadge]} /> :
+                    <Icon name='rocket-launch-outline' size={75} color='grey'/>
+                }
                 <Text style={[styles.launchMiniCardTitle, { color: colors.text }]} numberOfLines={1}>{launch.name}</Text>
                 <Text style={[styles.launchMiniCardDate, { color: colors.text }]}>{DateUtils.format(new Date(launch.date_utc), 'dd/MM/yyyy hh:mm')}</Text>
             </TouchableOpacity>
