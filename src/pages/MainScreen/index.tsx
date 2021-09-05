@@ -34,7 +34,7 @@ function MainScreen() {
                 name='Home'
                 component={Home}
                 options={{
-                    tabBarIcon: ({ color, focused, size }) => <Icon name={focused ? 'rocket' : 'rocket-outline'} color={color} size={size} />
+                    tabBarIcon: ({ color, focused, size }) => <Icon name={focused ? 'earth' : 'earth'} color={color} size={size} />
                 }}
             />
             <Tabs.Screen

@@ -1,7 +1,7 @@
 import { useTheme } from "@react-navigation/native"
 import React from "react"
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useAuth } from "../../contexts/AuthContext"
 
 function Settings() {
@@ -24,18 +24,18 @@ function Settings() {
             </View>
 
             <TouchableOpacity
-                style={[styles.option, styles.borderTop, styles.borderBottom]}
+                style={[styles.option, styles.borderTop, styles.borderBottom, { borderColor: colors.border }]}
             >
-                {/* <Icon name='information-outline' color={colors.primary} size={30}/> */}
-                <Text style={[styles.optionText]}>Sobre o sistema</Text>
+                <Icon name='information-outline' color={colors.text} size={30}/>
+                <Text style={[styles.optionText, { color: colors.text }]}>About</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
                 onPress={handleLogout}
-                style={[styles.option, styles.borderBottom]}
+                style={[styles.option, styles.borderBottom, { borderColor: colors.border }]}
             >
-                {/* <Icon name='logout' color={colors.primary} size={30}/> */}
-                <Text style={[styles.optionText]}>Sair</Text>
+                <Icon name='logout' color={colors.text} size={30}/>
+                <Text style={[styles.optionText, { color: colors.text }]}>Logout</Text>
             </TouchableOpacity>
         </View>
     )
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         alignItems: 'center',
-        borderColor: 'lightgrey'
+        // borderColor: 'lightgrey'
     },
     optionText: {
         marginLeft: 10,

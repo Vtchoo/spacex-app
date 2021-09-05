@@ -132,7 +132,7 @@ function LaunchPage() {
                     numberOfLines={!showDetails ? 4 : undefined}
                     style={[style.details, { color: colors.text }]}
                 >
-                    {launch.details}
+                    {launch.details || 'No description yet for this launch...'}
                 </Text>
                 <Icon name={showDetails ? 'chevron-up' : 'dots-horizontal'} size={30} color={colors.text} style={{ alignSelf: 'center' }} />
             </TouchableOpacity>
@@ -150,6 +150,7 @@ function LaunchPage() {
                     onChangeText={setComment}
                     placeholder='Add new comment...'
                     placeholderTextColor='grey'
+                    multiline
                     style={[style.newCommentInput, { color: colors.text, borderColor: colors.border }]}
                 />
                 <Icon name='send-circle' size={30} color={colors.primary} style={{ alignSelf: 'flex-end' }} onPress={addComment} />
