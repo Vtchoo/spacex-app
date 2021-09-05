@@ -30,6 +30,7 @@ function AuthProvider({ children }: AuthProviderProps) {
                 .collection('users')
                 .doc(user.uid)
                 .set({
+                    uid: user.uid,
                     photoURL: user.photoURL,
                     displayName: user.displayName
                 })
