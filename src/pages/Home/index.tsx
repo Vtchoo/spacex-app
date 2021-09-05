@@ -28,9 +28,16 @@ function Home() {
     const [limit, setLimit] = useState(10)
     const [page, setPage] = useState(1)
     const [hasNextPage, setHasNextPage] = useState(true)
+    
+    // Upcoming launches
+    const [upcomingLaunches, setUpcomingLaunches] = useState<Launch[]>([])
+    const [upcomingLauncheslimit, setUpcomingLaunchesLimit] = useState(10)
+    const [upcomingLaunchesPage, setUpcomingLaunchesPage] = useState(1)
+    const [hasNextUpcomingLaunchesPage, setHasNextUpcomingLaunchesPage] = useState(true)
 
     useEffect(() => {
         fetchNextLaunch()
+        fetchUpcomingLaunches()
         fetchPastLaunches()
     }, [])
     
@@ -43,19 +50,33 @@ function Home() {
         }
     }, [])
 
+    async function fetchUpcomingLaunches() {
+        
+        if (!hasNextUpcomingLaunchesPage) return
+        
+        try {
+            const result = await SpaceX.queryLaunches({ upcoming: true }, { limit: upcomingLauncheslimit, page: upcomingLaunchesPage, sort: { date_unix: 'asc' } })
+            setHasNextUpcomingLaunchesPage(result.hasNextPage)
+            setUpcomingLaunchesPage(result.nextPage)
+            setUpcomingLaunches([...upcomingLaunches, ...result.docs])
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
     async function fetchPastLaunches() {
 
         if (!hasNextPage) return
 
         try {
-            const result = await SpaceX.queryLaunches({ upcoming: false }, { limit, page, sort: { flight_number: 'desc' } })
+            const result = await SpaceX.queryLaunches({ upcoming: false }, { limit, page, sort: { date_unix: 'desc' } })
             setHasNextPage(result.hasNextPage)
             setPage(result.nextPage)
             setPastLaunches([...pastLaunches, ...result.docs])
         } catch (error) {
             console.log(error)
         }
-    } 
+    }
 
     return (
         <ScrollView style={[style.container]}>
@@ -68,6 +89,24 @@ function Home() {
                 </View>
             }
             
+            <Text style={[style.title, { color: colors.text }]}>Upcoming launches</Text>
+            <FlatList
+                data={upcomingLaunches}
+                keyExtractor={launch => launch.id}
+                renderItem={({ item, index }) =>
+                    <LaunchCardSmall
+                        launch={item}
+                        onPress={launch => navigation.navigate('Launch', { launchId: launch.id })}
+                        style={{ marginLeft: index ? 20 : 0 }}
+                    />
+                }
+                horizontal
+                contentContainerStyle={{ padding: 20 }}
+
+                onEndReachedThreshold={.1}
+                onEndReached={fetchUpcomingLaunches}
+            />
+
             <Text style={[style.title, { color: colors.text }]}>Previous launches</Text>
             <FlatList
                 data={pastLaunches}
