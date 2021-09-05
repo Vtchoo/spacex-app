@@ -42,7 +42,8 @@ function Comment({ userId, comment, style = {}, ...props }: CommentProps) {
                     <Image
                         width={40} height={40}
                         source={{ uri: user.photoURL }}
-                        style={{ width: '100%', aspectRatio: 1 }}
+                        style={{ width: '100%', aspectRatio: 1, borderRadius: 1000 }}
+                        resizeMode='cover'
                     /> :
                     <Icon name='account-circle-outline' size={40} color='grey' />
                 }

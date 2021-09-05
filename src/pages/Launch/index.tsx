@@ -141,7 +141,7 @@ function LaunchPage() {
             <View style={[style.newComment, { backgroundColor: colors.card, borderColor: colors.border, flexDirection: 'row' }]}>
                 <View style={{ width: 50, aspectRatio: 1 }}>
                     {user?.photoURL ?
-                        <Image width={50} height={50} source={{ uri: user.photoURL }} style={{ width: '100%', aspectRatio: 1 }} /> :
+                        <Image width={50} height={50} source={{ uri: user.photoURL }} style={{ width: '100%', aspectRatio: 1, borderRadius: 1000 }} /> :
                         <Icon name='account-circle-outline' size={50} color='grey' />
                     }
                 </View>

@@ -47,7 +47,7 @@ function MainScreen() {
                                 <Image
                                     source={{ uri: user.photoURL }}
                                     width={size} height={size}
-                                    resizeMode='contain'
+                                    resizeMode='cover'
                                     style={{ height: size, width: size }}
                                 />
                             </View> :
