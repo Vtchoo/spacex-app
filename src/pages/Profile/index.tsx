@@ -95,19 +95,18 @@ function Profile() {
 
         if (!user || !newProfilePic) return
 
-        storage()
-            .ref(`users/${user?.uid}.${newProfilePic.split('.').pop()}`)
-            .putFile(newProfilePic)
-            .then(async snapshot => {
-                try {
-                    const photoURL = await storage().ref(snapshot.metadata.fullPath).getDownloadURL()
-                    auth().currentUser?.updateProfile({ photoURL })
-                    firestore().collection('users').doc(user.uid).set({ photoURL }, { merge: true })
-                    setNewProfilePic(undefined)
-                } catch (error) {
-                    console.log(error)
-                }
-            })
+        const ref = storage().ref(`users/${user?.uid}.${newProfilePic.split('.').pop()}`)
+            
+        ref.putFile(newProfilePic).then(async snapshot => {
+            try {
+                const photoURL = await ref.getDownloadURL()
+                auth().currentUser?.updateProfile({ photoURL })
+                firestore().collection('users').doc(user.uid).set({ photoURL }, { merge: true })
+                setNewProfilePic(undefined)
+            } catch (error) {
+                console.log(error)
+            }
+        })
     }
 
     // Render
